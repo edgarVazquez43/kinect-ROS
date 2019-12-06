@@ -1,0 +1,11 @@
+<launch>  
+  <group ns="hardware">  
+    <node name="video_recorder" pkg="video_recorder" type="video_recorder" output="screen"/>
+  </group>
+
+  
+  <group ns="hri">
+    <node name="rviz" pkg="rviz" type="rviz"/>
+  </group>
+  
+</launch>
