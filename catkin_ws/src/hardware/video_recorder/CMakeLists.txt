@@ -135,7 +135,7 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
+  ${OpenCVV_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
 )
 
