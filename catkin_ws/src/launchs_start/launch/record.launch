@@ -18,7 +18,7 @@
 
   <node name="rosbag_recorder_kinect" pkg="rosbag_record" type="rosbag_record_kinect_node" output="screen"/>
   <node name="rosbag_recorder_xtion"  pkg="rosbag_record" type="rosbag_record_xtion_node" output="screen"/>
-  
-  
 
+  <!-- <node name="keyboard_mannager"  pkg="keyboard_man" type="keyboard_man_node" output="screen"/> -->
+  
 </launch>
