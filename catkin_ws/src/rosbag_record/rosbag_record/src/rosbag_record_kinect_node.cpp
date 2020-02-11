@@ -6,18 +6,15 @@
 #include "sensor_msgs/PointCloud2.h"
 
 
-std::string name       = "user_1/action";
+std::string user       = "user_";
+std::string name       = "/action";
 std::string path       = "/home/roboworks/actions_dataset/kinect_rosbag/";
-std::string filename   =  path + name + ".bag";        // name of the output video file
 int         indexVideo = 0;
+int         indexUser  = 1;
 bool        recording  = false;
 
-rosbag::Bag              bag;
-sensor_msgs::PointCloud2 msgCloudKinect;
-
+rosbag::Bag bag;
 std::string topic_name = "/kinect/camera/depth_registered/points";
-//std::string topic_name = "/xtion/xtion/depth_registered/points";
-
 
 
 void callback_pc(const sensor_msgs::PointCloud2::ConstPtr& msg)
@@ -32,7 +29,9 @@ void callback_start_record(const std_msgs::Bool::ConstPtr& msg)
   indexVideo++;
 
   std::string c_in = std::to_string(indexVideo);
-  std::string new_filename = path + name + c_in + ".bag";        // name of the output video file
+  std::string c_user = std::to_string(indexUser);
+  // name of the output video file
+  std::string new_filename = path + user + c_user + name + c_in + ".bag";
   std::cout << new_filename << std::endl;
 
   bag.open(new_filename, rosbag::bagmode::Write);
@@ -51,17 +50,23 @@ void callback_stop_record(const std_msgs::Bool::ConstPtr& msg)
   bag.close();
 }
 
+void callback_new_user(const std_msgs::Bool::ConstPtr& msg)
+{
+  indexUser++;
+}
+
 
 
 int main(int argc, char** argv)
 {
   std::cout << "Initializing rosbag_record_node (Kinect)  BY Edd-2" << std::endl;
-  ros::init(argc, argv, "rosbag_record_node");
+  ros::init(argc, argv, "rosbag_record_kinect");
   ros::NodeHandle n;
   //Subcribers
   ros::Subscriber  subPC     = n.subscribe(topic_name, 1, callback_pc);
   ros::Subscriber  subStart  = n.subscribe("/video_record/start", 1, callback_start_record);
   ros::Subscriber  subSave   = n.subscribe("/video_record/stop",  1, callback_stop_record);
+  ros::Subscriber  subNewUser = n.subscribe("/video_record/new_user",  1, callback_new_user);
   
   ros::Time::init();
   ros::Rate  loop(60);

@@ -63,8 +63,8 @@ int main(int argc, char** argv)
     
     ros::init(argc, argv, "camera_record_node");
     ros::NodeHandle n;
-    ros::Subscriber  subStart       =n.subscribe("/video_record/start", 1, callback_start_record);
-    ros::Subscriber  subSave        =n.subscribe("/video_record/stop",  1, callback_stop_record);
+    ros::Subscriber  subStart = n.subscribe("/video_record/start", 1, callback_start_record);
+    ros::Subscriber  subSave  = n.subscribe("/video_record/stop",  1, callback_stop_record);
 
     ros::Rate loop(30);
 
