@@ -22,7 +22,8 @@ std::string topic_name = "/kinect/camera/depth_registered/points";
 
 void callback_pc(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
-  bag.write(topic_name, ros::Time::now(), msg);
+  if(recording)
+    bag.write(topic_name, ros::Time::now(), msg);
 }
 
 void callback_start_record(const std_msgs::Bool::ConstPtr& msg)
