@@ -58,10 +58,10 @@ void callback_stop_record(const std_msgs::Bool::ConstPtr& msg)
 
 int main(int argc, char** argv)
 {   
-    std::cout << "INITIALIZING KINECT MANAGER BY MARCOSOF ..." << std::endl;
-    std::cout << "KinectMan.->Using real kinect..." << std::endl;
+    std::cout << "INITIALIZING VIDEO RECORDER NODE  by EDD-2..." << std::endl;
+    std::cout << "VideoRecorder.->Using Device 0 and OPENCV..." << std::endl;
     
-    ros::init(argc, argv, "kinect_man");
+    ros::init(argc, argv, "camera_record_node");
     ros::NodeHandle n;
     ros::Subscriber  subStart       =n.subscribe("/video_record/start", 1, callback_start_record);
     ros::Subscriber  subSave        =n.subscribe("/video_record/stop",  1, callback_stop_record);
@@ -82,10 +82,10 @@ int main(int argc, char** argv)
     //Check if the device was succesfully opened
     if(!capture.isOpened())
     {
-      std::cout << "Error opening video device" << std::endl;
+      std::cout << "VideoRecorder.-> Error opening video device" << std::endl;
       return -1;
     } 
-    std::cout << "KinectMan.->Kinect sensor started :D" << std::endl;
+    std::cout << "VideoRecorder.-> Web camera 0 started :D" << std::endl;
 
     
      while(ros::ok())
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
 	outputVideo.write(bgrImage);
 
       // show live and wait for a key with timeout long enough to show images
-      cv::imshow("PlayStationEye", bgrImage);
+      cv::imshow("WebCam", bgrImage);
       if (cv::waitKey(5) >= 0)
 	break;
       
