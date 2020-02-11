@@ -15,6 +15,10 @@
   </group>
   
   <node name="video_recorder" pkg="video_recorder" type="video_recorder" output="screen"/>
+
+  <node name="rosbag_recorder_kinect" pkg="rosbag_record" type="rosbag_record_kinect_node" output="screen"/>
+  <node name="rosbag_recorder_xtion"  pkg="rosbag_record" type="rosbag_record_xtion_node" output="screen"/>
+  
   
 
 </launch>
