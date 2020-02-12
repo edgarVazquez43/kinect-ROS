@@ -30,38 +30,56 @@ std::string topic_tf = "/tf";
 void callback_cc(const sensor_msgs::Image::ConstPtr& msg)
 {
   if(recording)
+  {
     bag.write(topic_cc, ros::Time::now(), msg);
+    std::cout << ". ";
+  }
 }
 
 void callback_cl(const sensor_msgs::Image::ConstPtr& msg)
 {
   if(recording)
+  {
     bag.write(topic_cl, ros::Time::now(), msg);
+    std::cout << ". ";
+  }
 }
 
 void callback_cr(const sensor_msgs::Image::ConstPtr& msg)
 {
   if(recording)
+  {
     bag.write(topic_cr, ros::Time::now(), msg);
+    std::cout << ". ";
+  }
 }
 
 void callback_ch(const sensor_msgs::Image::ConstPtr& msg)
 {
   if(recording)
+  {
     bag.write(topic_ch, ros::Time::now(), msg);
+    std::cout << ". ";
+  }
 }
 
 void callback_pc(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
   if(recording)
+  {
     bag.write(topic_pc, ros::Time::now(), msg);
+    std::cout << ". ";
+  }
 }
 
 
 void callback_tf(const tf2_msgs::TFMessage::ConstPtr& msg)
 {
   if(recording)
+  {
     bag.write(topic_tf, ros::Time::now(), msg);
+    std::cout << ". " << std::endl;
+  }
 }
 
 
@@ -96,6 +114,7 @@ void callback_stop_record(const std_msgs::Bool::ConstPtr& msg)
 void callback_new_user(const std_msgs::Bool::ConstPtr& msg)
 {
   indexUser++;
+  std::cout << "Current recording user: " << indexUser << std::endl;
 }
 
 
