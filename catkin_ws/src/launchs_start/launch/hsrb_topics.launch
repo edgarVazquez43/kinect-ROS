@@ -1,0 +1,10 @@
+<launch>
+  <group ns="hri">
+    <node name="rviz" pkg="rviz" type="rviz"/>
+  </group>
+  
+  <node name="rosbag_recorder_hsrb"  pkg="rosbag_record" type="rosbag_record_hsrb_node" output="screen"/>
+  <node name="keyboard_mannager"  pkg="keyboard_man" type="keyboard_man_node" output="screen"/>
+  
+  
+</launch>
