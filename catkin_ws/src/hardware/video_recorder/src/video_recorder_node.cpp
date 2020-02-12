@@ -15,12 +15,12 @@
 #include <boost/foreach.hpp>
 #define foreach BOOST_FOREACH
 
-
-std::string name       = "user_1/action";
+std::string user       = "user_";
+std::string name       = "/action";
 std::string path       = "/home/roboworks/actions_dataset/playstationEye_camera/";
-std::string filename   =  path + name + ".avi";        // name of the output video file
 int         codec      = CV_FOURCC('M', 'J', 'P', 'G');  // select desired codec (must be available at runtime)
 int         indexVideo = 0;
+int         indexUser  = 1;
 bool        recording  = false;
 double      fps        = 30.0;                          // framerate of the created video stream
 
@@ -37,8 +37,11 @@ void callback_start_record(const std_msgs::Bool::ConstPtr& msg)
   indexVideo++;
 
   std::string c_in = std::to_string(indexVideo);
-  std::string new_filename = path + name + c_in + ".avi";        // name of the output video file
+  std::string c_user = std::to_string(indexUser);
+  // name of the output video file
+  std::string new_filename = path + user + c_user + name + c_in + ".avi";
   std::cout << new_filename << std::endl;
+
   outputVideo.open(new_filename, codec, fps, size, true);
 
   std::cout << " ------------------------------------------------ " << std::endl
@@ -55,6 +58,13 @@ void callback_stop_record(const std_msgs::Bool::ConstPtr& msg)
 
 }
 
+void callback_new_user(const std_msgs::Bool::ConstPtr& msg)
+{
+  indexUser++;
+  std::cout << "webCam.-> New user: " << indexUser << std::endl;
+  indexVideo = 1;
+}
+
 
 int main(int argc, char** argv)
 {   
@@ -63,8 +73,9 @@ int main(int argc, char** argv)
     
     ros::init(argc, argv, "camera_record_node");
     ros::NodeHandle n;
-    ros::Subscriber  subStart = n.subscribe("/video_record/start", 1, callback_start_record);
-    ros::Subscriber  subSave  = n.subscribe("/video_record/stop",  1, callback_stop_record);
+    ros::Subscriber  subStart   = n.subscribe("/video_record/start", 1, callback_start_record);
+    ros::Subscriber  subSave    = n.subscribe("/video_record/stop",  1, callback_stop_record);
+    ros::Subscriber  subNewUser = n.subscribe("/video_record/new_user",  1, callback_new_user);
 
     ros::Rate loop(30);
 
