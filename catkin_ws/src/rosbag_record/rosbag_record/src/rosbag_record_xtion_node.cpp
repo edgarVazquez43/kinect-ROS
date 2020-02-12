@@ -15,13 +15,15 @@ bool        recording  = false;
 
 rosbag::Bag bag;
 std::string topic_name = "/xtion/xtion/depth_registered/points";
-
-
+// /xtion/xtion/depth_registered/points
 
 void callback_pc(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
   if(recording)
+  {
     bag.write(topic_name, ros::Time::now(), msg);
+    std::cout << "xtion.>..." << std::endl;
+  }
 }
 
 void callback_start_record(const std_msgs::Bool::ConstPtr& msg)

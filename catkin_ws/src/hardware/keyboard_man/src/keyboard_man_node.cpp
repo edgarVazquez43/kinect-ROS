@@ -33,6 +33,7 @@ int main(int argc, char** argv)
   std::cout << "INITIALIZING KEYBOARD-TELEOP  by EDD-2" << std::endl;
   ros::init(argc, argv, "keyboard_teleop");
   ros::NodeHandle n;
+  ros::Rate loop(30);
 
   ros::Publisher pubStart   = n.advertise<std_msgs::Bool>("/video_record/start", 1);
   ros::Publisher pubStop    = n.advertise<std_msgs::Bool>("/video_record/stop", 1);
@@ -70,6 +71,9 @@ int main(int argc, char** argv)
 	std::cout << ":  Exit" << std::endl;
 	return 0;
       }
+
+      ros::spinOnce();
+      loop.sleep();
      
     }
   

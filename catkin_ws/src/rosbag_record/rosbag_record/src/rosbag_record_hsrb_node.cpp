@@ -3,11 +3,13 @@
 #include <std_msgs/Int32.h>
 #include <std_msgs/String.h>
 #include <std_msgs/Bool.h>
+#include <tf2_msgs/TFMessage.h>
 #include "sensor_msgs/PointCloud2.h"
+#include "sensor_msgs/Image.h"
 
 std::string user       = "user_";
 std::string name       = "/action";
-std::string path       = "/home/roboworks/actions_dataset/xtion_rosbag/";
+std::string path       = "/home/roboworks/actions_dataset/hsrb_rosbag/";
 int         indexVideo = 0;
 int         indexUser  = 1;
 bool        recording  = false;
@@ -15,31 +17,38 @@ bool        recording  = false;
 rosbag::Bag bag;
 
 //string with topics names to be saved
-std::string topic_cc = "";
-std::string topic_cl = "";
-std::string topic_cr = "";
-std::string topic_pc = "";
-std::string topic_tf = "";
+std::string topic_cc = "/hsrb/head_center_camera/image_raw";
+std::string topic_cl = "/hsrb/head_l_stereo_camera/image_rect_color";
+std::string topic_cr = "/hsrb/head_r_stereo_camera/image_rect_color";
+std::string topic_pc = "/hsrb/head_rgbd_sensor/depth_registered/rectified_points";
+std::string topic_ch = "/hsrb/hand_camera/image_raw";
+std::string topic_tf = "/tf";
 
 
 
 //CALLBACKS TO WRITE INTO THE BAG
-void callback_cc(const sensor_msgs::PointCloud2::ConstPtr& msg)
+void callback_cc(const sensor_msgs::Image::ConstPtr& msg)
 {
   if(recording)
     bag.write(topic_cc, ros::Time::now(), msg);
 }
 
-void callback_cl(const sensor_msgs::PointCloud2::ConstPtr& msg)
+void callback_cl(const sensor_msgs::Image::ConstPtr& msg)
 {
   if(recording)
-    bag.write(topic_pc, ros::Time::now(), msg);
+    bag.write(topic_cl, ros::Time::now(), msg);
 }
 
-void callback_cr(const sensor_msgs::PointCloud2::ConstPtr& msg)
+void callback_cr(const sensor_msgs::Image::ConstPtr& msg)
 {
   if(recording)
-    bag.write(topic_pc, ros::Time::now(), msg);
+    bag.write(topic_cr, ros::Time::now(), msg);
+}
+
+void callback_ch(const sensor_msgs::Image::ConstPtr& msg)
+{
+  if(recording)
+    bag.write(topic_ch, ros::Time::now(), msg);
 }
 
 void callback_pc(const sensor_msgs::PointCloud2::ConstPtr& msg)
@@ -48,10 +57,11 @@ void callback_pc(const sensor_msgs::PointCloud2::ConstPtr& msg)
     bag.write(topic_pc, ros::Time::now(), msg);
 }
 
-void callback_tf(const sensor_msgs::PointCloud2::ConstPtr& msg)
+
+void callback_tf(const tf2_msgs::TFMessage::ConstPtr& msg)
 {
   if(recording)
-    bag.write(topic_pc, ros::Time::now(), msg);
+    bag.write(topic_tf, ros::Time::now(), msg);
 }
 
 
@@ -100,6 +110,7 @@ int main(int argc, char** argv)
   ros::Subscriber subEyeRightCamera = n.subscribe(topic_cr, 1, callback_cr);
   ros::Subscriber subEyeLeftCamera  = n.subscribe(topic_cl, 1, callback_cl);
   ros::Subscriber subCenterCamera   = n.subscribe(topic_cc, 1, callback_cc);
+  ros::Subscriber subHandCamera   = n.subscribe(topic_ch, 1, callback_ch);
   ros::Subscriber subPC   = n.subscribe(topic_pc, 1, callback_pc);
   ros::Subscriber subTF   = n.subscribe(topic_tf, 1, callback_tf);
 
