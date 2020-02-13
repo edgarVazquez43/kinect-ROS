@@ -23,6 +23,9 @@ std::string topic_cr = "/hsrb/head_r_stereo_camera/image_rect_color";
 std::string topic_pc = "/hsrb/head_rgbd_sensor/depth_registered/rectified_points";
 std::string topic_ch = "/hsrb/hand_camera/image_raw";
 std::string topic_tf = "/tf";
+std::string topic_rgb_s   = "/hsrb/head_rgbd_sensor/depth_registered/rectified_points";
+std::string topic_depth_s = "/hsrb/head_rgbd_sensor/depth_registered/rectified_points";
+
 
 
 
@@ -68,6 +71,24 @@ void callback_pc(const sensor_msgs::PointCloud2::ConstPtr& msg)
   if(recording)
   {
     bag.write(topic_pc, ros::Time::now(), msg);
+    std::cout << ". ";
+  }
+}
+
+void callback_rgb_s(const sensor_msgs::Image::ConstPtr& msg)
+{
+  if(recording)
+  {
+    bag.write(topic_rgb_s, ros::Time::now(), msg);
+    std::cout << ". ";
+  }
+}
+
+void callback_depth_s(const sensor_msgs::Image::ConstPtr& msg)
+{
+  if(recording)
+  {
+    bag.write(topic_depth_s, ros::Time::now(), msg);
     std::cout << ". ";
   }
 }
@@ -129,7 +150,9 @@ int main(int argc, char** argv)
   ros::Subscriber subEyeRightCamera = n.subscribe(topic_cr, 1, callback_cr);
   ros::Subscriber subEyeLeftCamera  = n.subscribe(topic_cl, 1, callback_cl);
   ros::Subscriber subCenterCamera   = n.subscribe(topic_cc, 1, callback_cc);
-  ros::Subscriber subHandCamera   = n.subscribe(topic_ch, 1, callback_ch);
+  ros::Subscriber subHandCamera    = n.subscribe(topic_ch, 1, callback_ch);
+  ros::Subscriber subRGBsensor     = n.subscribe(topic_rgb_s, 1, callback_rgb_s);
+  ros::Subscriber subDepthSensor   = n.subscribe(topic_depth_s, 1, callback_depth_s);
   ros::Subscriber subPC   = n.subscribe(topic_pc, 1, callback_pc);
   ros::Subscriber subTF   = n.subscribe(topic_tf, 1, callback_tf);
 
